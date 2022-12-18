@@ -73,9 +73,6 @@
         </v-list-item>
       </v-card>
     </v-list>
-    <v-row>
-      <v-alert v-if="!filteredList.length" style="color: gray">0 rezultate nga kërkimi juaj.</v-alert>
-    </v-row>
   </v-container>
 </template>
 
@@ -91,9 +88,11 @@
         users: [],
         showAlert: false,
         search: '',
+        searching: false
     }
     },
     mounted() {
+      if(localStorage.users)
       this.users = JSON.parse(localStorage.getItem('users'))
     },
     methods: {
@@ -120,9 +119,12 @@
     },
     computed: {
       filteredList() {
-        return this.users.filter(user => {
-          return user.name.toLowerCase().includes(this.search.toLowerCase())
-        })
+        if(this.users.length) {
+          return this.users.filter(user => {
+            return user.name.toLowerCase().includes(this.search.toLowerCase())
+          })
+        }
+      return []
       }
     }
   }
